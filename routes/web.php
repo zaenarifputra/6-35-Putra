@@ -2,7 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ContactController;
-use GuzzleHttp\Middleware;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,19 +16,18 @@ use GuzzleHttp\Middleware;
 |
 */
 
-
 Route::get('/', function () {
     return view('index' , [
-        "title" => "Beranda"
+        "title" => "Home"
     ]);
 });
 
 Route::get('/about', function () {
     return view ('about', [
         "title" => "About",
-        "name" => "Zaenarif Putra",
-        "email" => "putrazaenarif@gmail.com",
-        "gambar" => "putra.png"
+        "nama" => "Evi Nirmalasari",
+        "email" => "evinirmalasarisari@gmail.com",
+        "gambar" => "foto1.jpeg"
     ]);
 });
 
@@ -37,12 +37,23 @@ Route::get('/gallery', function () {
     ]);
 });
 
-Route::resource('/contacts', ContactController::class);
+Route::get('/home', function(){
+    return view('admin.home', [
+        "title" => "Home"
+    ]);
+});
 
+//Route::resource('/contacts', ContactController::class);
+Route::get('/contacts/create', [ContactController::class, 'create'])->name('contacts.create');
+Route::post('/contacts/store', [ContactController::class, 'store'])->name('contacts.store');
 
 Auth::routes();
 
-Route::group(['Middleware' => ['auth']], function (){
+Route::group(['middleware' => ['auth']], function () {
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('/contacts/index', [ContactController::class, 'index'])->name('contacts.index');
+    Route::get('/contacts/{id}/edit', [ContactController::class, 'edit'])->name('contacts.edit');
+    Route::post('/contacts/{id}/update', [ContactController::class, 'update'])->name('contacts.update');
+    Route::get('/contacts/{id}/destroy', [ContactController::class, 'destroy'])->name('contacts.destroy');
 
 });
