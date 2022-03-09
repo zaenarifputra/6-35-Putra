@@ -25,9 +25,9 @@ Route::get('/', function () {
 Route::get('/about', function () {
     return view ('about', [
         "title" => "About",
-        "nama" => "Evi Nirmalasari",
-        "email" => "evinirmalasarisari@gmail.com",
-        "gambar" => "foto1.jpeg"
+        "nama" => "Zaenarif Putra",
+        "email" => "putrazaenarif@gmail.com",
+        "gambar" => "putra.png"
     ]);
 });
 
